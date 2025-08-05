@@ -59,6 +59,8 @@ Durante o desafio, pode ser que você faça modificações nesse arquivo e, para
     - `python manage.py makemigrations`, esse comando vai sintetizar as alterações e preparar uma migration.
     - após a execução do comando anterior, execute `python manage.py migrate`, que vai aplicar a migration gerada anteriormente no banco de dados.
 
+---
+
 ### Tarefa 1
 
 Trabalhando em cima dessa API, você deverá criar uma *nova tabela* no banco de dados, que vai servir para representar, **Atividades** de uma **Disciplina**, podendo definir o nome, data e valor da atividade, assim como um identificador para cada Atividade.
@@ -71,6 +73,8 @@ Para a criação das **views**, você deve utilizar a classe **APIView**.(tem ex
 Finalizando a tarefa, você precisa *criar um pequeno frontend*, que deve possuir uma tela para exibir as **Disciplinas** cadastradas na API, possuir também uma tela que tenha um formulário, que vai registrar na API uma **Atividade** associada a uma **Disciplina** e, por fim, possuir uma tela onde seja possível cadastrar o *desempenho* de um **Aluno** em dada **Atividade**.
 
 Inclua o projeto do frontend dentro de uma pasta chamada 'frontend' na estrutura desse projeto para que tenhamos apenas uma entrega.
+
+---
 
 ### Tarefa 2
 
@@ -164,9 +168,28 @@ Matrícula
 
 ---
 
+### Tarefa 3
+
+Como última tarefa, você deverá fazer uma pequena aplicação de console, que vai simular uma creche para pets. Nesse programa, você irá precisar implementar um menu, com algumas opções:
+    - Cadastrar Cachorro. Essa opção levará para uma série de imputs onde você irá coletar as informações do cachorro a ser cadastrado.
+    - Editar Cachorro. Nessa opção deve ser possível visualizar as informações do cachorro e editá-las.
+    - Visualizar Cachorro. Nessa opção deve ser possível visualizar todas as informações do cachorro.
+    - Deletar Cachorro. Ao escolher essa opção, deve ser possível deletar um registro específico de um cachorro.
+    - Listar Cachorros. Escolhendo essa opção, deve ser mostrado ao usuário todos os registros armazenados.
+    - Fechar. Deve encerrar o programa.
+
+> Regras
+
+- Todos os registros devem ser mantidos em listas(arrays, vetores).
+- Os registros podem ser, tanto, dicionários ou objetos, caso queira implementar classes.
+- Seu código deve estar na raiz desse projeto.
+- Você deve utilizar da [TheDogAPI](https://docs.thedogapi.com/docs/intro) para coletar as raças a serem armazenadas nos registros de cada cachorro. Utilize a lib do python chamada [requests](https://requests.readthedocs.io/en/latest/). Também será necessário gerar um token seu na API [aqui](https://thedogapi.com/signup).
+
+---
+
 ### Entrega
 
-Você terá até xx/xx para nos enviar o link do repositório no github com esse projeto, faça quantos commits forem necessários, codifique de forma clara e objetiva, comente sempre que julgar necessário.
+Você terá até 11/08 - 12:00, para nos enviar o link do repositório no github com esse projeto, faça quantos commits forem necessários, codifique de forma clara e objetiva, comente sempre que julgar necessário.
 
 Em caso de dúvidas sobre a stack de desenvolvimento, podemos esclarecer problemas mais específicos, caso encontre erros durante o desenvolvimento, recomendamos que busque a solução na documentação da ferramenta ou em fóruns.
 
