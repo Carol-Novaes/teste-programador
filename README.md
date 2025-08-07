@@ -4,7 +4,7 @@
 
 ## Configuração do Ambiente de Desenvolvimento
 
-Para este teste, você precisa fazer um clone do [projeto](https://www.github.com/) e fazer a configuração básica do app. Que será descrica abaixo.
+Para este teste, você precisa fazer um clone do [projeto](https://www.github.com/) e fazer a configuração básica do app, que será descrita abaixo.
 
 1. Faça o clone do repositório e abra um terminal no caminho da pasta raiz do projeto.
 2. Para executar o projeto, será necessário que instale o python em sua máquina. É possível fazer o download do instalador clicando [aqui](https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe).
@@ -66,7 +66,7 @@ Durante o desafio, pode ser que você faça modificações nesse arquivo e, para
 Trabalhando em cima dessa API, você deverá criar uma *nova tabela* no banco de dados, que vai servir para representar, **Atividades** de uma **Disciplina**, podendo definir o nome, data e valor da atividade, assim como um identificador para cada Atividade.
 Também será necessário que *crie uma tabela* que represente o desempenho de cada **Aluno** em uma **Atividade**, armazenando qual foi a atividade executada e a nota obtida pelo **Aluno**.
 
-Depois que criar a estrutura das **Atividades**, você deve cria as rotas **CRUD**(create, read, update e delete) para gerenciar as Atividades e o desempenho dos alunos. Para que as rotas funcionem corretamente, precisarão criar as views que vão ser acessadas pelas rotas.
+Depois que criar a estrutura das **Atividades**, você deve criar as rotas **CRUD**(create, read, update e delete) para gerenciar as Atividades e o desempenho dos alunos. Para que as rotas funcionem corretamente, é necessário criar as views que vão ser acessadas pelas rotas.
 
 Para a criação das **views**, você deve utilizar a classe **APIView**.(tem exemplos de seu uso no projeto)
 
@@ -189,7 +189,7 @@ Como última tarefa, você deverá fazer uma pequena aplicação de console, que
 
 ### Entrega
 
-Você terá até 11/08 - 12:00, para nos enviar o link do repositório no github com esse projeto, faça quantos commits forem necessários, codifique de forma clara e objetiva, comente sempre que julgar necessário.
+Você terá até 12/08 - 12:00, para nos enviar o link do repositório no github com esse projeto, faça quantos commits forem necessários, codifique de forma clara e objetiva, comente sempre que julgar necessário.
 
 Em caso de dúvidas sobre a stack de desenvolvimento, podemos esclarecer problemas mais específicos, caso encontre erros durante o desenvolvimento, recomendamos que busque a solução na documentação da ferramenta ou em fóruns.
 
