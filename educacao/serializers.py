@@ -29,4 +29,15 @@ class AtividadeSerializer(serializers.ModelSerializer):
 class DesempenhoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Desempenho
-        fields = '__all__'                
+        fields = '__all__'   
+
+    def validate(self, data):
+        atividade = data.get('atividade')
+        nota = data.get('nota')
+        
+        if nota and atividade:
+            if nota > atividade.valor:
+                raise serializers.ValidationError(
+                    {'nota': f'A nota máxima permitida para esta atividade é {atividade.valor}'}
+                )
+        return data                 

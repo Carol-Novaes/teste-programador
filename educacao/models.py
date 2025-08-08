@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 from django.db import models
@@ -56,5 +57,13 @@ class Desempenho(models.Model):
     atividade = models.ForeignKey(Atividade, on_delete=models.CASCADE, related_name='desempenhos')
     nota = models.DecimalField(max_digits=5, decimal_places=2)
      
+    def clean(self):
+        super().clean()
+        if self.nota and self.atividade:
+            if self.nota > self.atividade.valor:
+                raise ValidationError(
+                    f'A nota atribuída ({self.nota}) não pode ser maior que o valor da atividade ({self.atividade.valor})!'
+                )
+             
     def __str__(self):
         return f"{self.aluno.nome} - {self.atividade.nome} ; {self.nota}" 
