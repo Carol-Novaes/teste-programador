@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 # Create your models here.
 from django.db import models
 
+from .validators import validar_nota_maxima
+
 class Aluno(models.Model):
     codigo = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
@@ -56,14 +58,10 @@ class Desempenho(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, related_name='desempenhos')
     atividade = models.ForeignKey(Atividade, on_delete=models.CASCADE, related_name='desempenhos')
     nota = models.DecimalField(max_digits=5, decimal_places=2)
-     
+
     def clean(self):
         super().clean()
-        if self.nota and self.atividade:
-            if self.nota > self.atividade.valor:
-                raise ValidationError(
-                    f'A nota atribuída ({self.nota}) não pode ser maior que o valor da atividade ({self.atividade.valor})!'
-                )
-             
+        validar_nota_maxima(self.atividade, self.nota) 
+
     def __str__(self):
         return f"{self.aluno.nome} - {self.atividade.nome} ; {self.nota}" 

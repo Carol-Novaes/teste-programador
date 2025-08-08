@@ -1,5 +1,7 @@
+from django.forms import ValidationError
 from rest_framework import serializers
 from .models import Aluno, Curso, Disciplina, Matricula, Atividade, Desempenho
+from .validators import validar_nota_maxima
 
 class AlunoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,12 +34,8 @@ class DesempenhoSerializer(serializers.ModelSerializer):
         fields = '__all__'   
 
     def validate(self, data):
-        atividade = data.get('atividade')
-        nota = data.get('nota')
-        
-        if nota and atividade:
-            if nota > atividade.valor:
-                raise serializers.ValidationError(
-                    {'nota': f'A nota máxima permitida para esta atividade é {atividade.valor}'}
-                )
+        try:
+            validar_nota_maxima(data.get('atividade'), data.get('nota'))
+        except ValidationError as e:
+            raise serializers.ValidationError({'nota':str(e)})    
         return data                 
