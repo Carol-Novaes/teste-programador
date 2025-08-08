@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
-from .models import Aluno, Curso, Disciplina, Matricula
-from .serializers import AlunoSerializer, CursoSerializer, DisciplinaSerializer, MatriculaSerializer
+from .models import Aluno, Curso, Disciplina, Matricula, Atividade, Desempenho
+from .serializers import AlunoSerializer, CursoSerializer, DisciplinaSerializer, MatriculaSerializer, AtividadeSerializer, DesempenhoSerializer
 
 # ----------- ALUNO ----------------
 class AlunoListCreateAPIView(APIView):
@@ -136,4 +136,76 @@ class MatriculaDetailAPIView(APIView):
     def delete(self, request, pk):
         matricula = get_object_or_404(Matricula, pk=pk)
         matricula.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+# ----------- ATIVIDADE ----------------    
+class AtividadeListCreateAPIView(APIView):
+    def get(self, request):
+        atividades = Atividade.objects.all()
+        serializer = AtividadeSerializer(atividades, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = AtividadeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AtividadeDetailAPIView(APIView):
+    def get(self, request, pk):
+        atividade = get_object_or_404(Atividade, pk=pk)
+        serializer = AtividadeSerializer(atividade)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        atividade = get_object_or_404(Atividade, pk=pk)
+        serializer = AtividadeSerializer(atividade, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        atividade = get_object_or_404(Atividade, pk=pk)
+        atividade.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+# ----------- DESEMPENHO ----------------
+class DesempenhoListCreateAPIView(APIView):
+    def get(self, request):
+        desempenhos = Desempenho.objects.all()
+        serializer = DesempenhoSerializer(desempenhos, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = DesempenhoSerializer(data=request.data)
+        if serializer.is_valid():
+            if Desempenho.objects.filter(aluno=serializer.validated_data['aluno'], 
+                                        atividade=serializer.validated_data['atividade']).exists():
+                return Response(
+                    {'error': 'Já existe uma nota registrada para este aluno(a) nesta atividade!'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class DesempenhoDetailAPIView(APIView):
+    def get(self, request, pk):
+        desempenho = get_object_or_404(Desempenho, pk=pk)
+        serializer = DesempenhoSerializer(desempenho)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        desempenho = get_object_or_404(Desempenho, pk=pk)
+        serializer = DesempenhoSerializer(desempenho, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        desempenho = get_object_or_404(Desempenho, pk=pk)
+        desempenho.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

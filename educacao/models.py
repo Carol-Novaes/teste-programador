@@ -40,3 +40,21 @@ class Matricula(models.Model):
     def __str__(self):
         return f"{self.codigo_aluno.nome} - {self.codigo_disciplina.nome}"
     
+class Atividade(models.Model):
+    id = models.AutoField(primary_key=True)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, related_name='atividades')
+    nome = models.CharField(max_length=255)    
+    valor = models.DecimalField(max_digits=5, decimal_places=2)
+    data_atividade = models.DateField()
+     
+    def __str__(self):
+        return f"{self.nome} - {self.disciplina.nome}"   
+
+class Desempenho(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, related_name='desempenhos')
+    atividade = models.ForeignKey(Atividade, on_delete=models.CASCADE, related_name='desempenhos')
+    nota = models.DecimalField(max_digits=5, decimal_places=2)
+     
+    def __str__(self):
+        return f"{self.aluno.nome} - {self.atividade.nome} ; {self.nota}" 

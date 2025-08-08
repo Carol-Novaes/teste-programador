@@ -4,6 +4,8 @@ from .views import (
     CursoListCreateAPIView, CursoDetailAPIView,
     DisciplinaListCreateAPIView, DisciplinaDetailAPIView,
     MatriculaListCreateAPIView, MatriculaDetailAPIView,
+    AtividadeListCreateAPIView, AtividadeDetailAPIView,
+    DesempenhoListCreateAPIView, DesempenhoDetailAPIView,
 )
 
 urlpatterns = [
@@ -18,4 +20,10 @@ urlpatterns = [
 
     path('matriculas/', MatriculaListCreateAPIView.as_view()),
     path('matriculas/<int:pk>/', MatriculaDetailAPIView.as_view()),
+
+    path('atividades/', AtividadeListCreateAPIView.as_view()),
+    path('atividades/<int:pk>/', AtividadeDetailAPIView.as_view()),
+
+    path('desempenhos/', DesempenhoListCreateAPIView.as_view()),
+    path('desempenhos/<int:pk>/', DesempenhoDetailAPIView.as_view()),
 ]
