@@ -103,7 +103,6 @@ const cadastrarDesempenho = async () => {
   isSubmitting.value = true
   
   try {
-    // Converte a nota para número (pode vir como string do input)
     const payload = {
       ...novoDesempenho.value,
       nota: parseFloat(novoDesempenho.value.nota)
@@ -113,12 +112,6 @@ const cadastrarDesempenho = async () => {
     
     if (response.status === 201) {
       successMessage.value = 'Desempenho cadastrado com sucesso!'
-      // Limpa o formulário após o cadastro
-      novoDesempenho.value = {
-        aluno: '',
-        atividade: '',
-        nota: null
-      }
     }
   } catch (err) {
     error.value = 'Erro ao cadastrar desempenho: ' + (err.response?.data?.message || err.message)
