@@ -16,6 +16,7 @@
         </div>
         
         <button type="submit" class="btn-submit">Cadastrar Atividade</button>
+        
         <router-link :to="{ name: 'disciplinas' }" class="btn-cancel">
         Cancelar
       </router-link>
@@ -111,6 +112,7 @@ onMounted(() => {
 .form-group label {
   display: block;
   margin-bottom: 5px;
+  margin-top: 5px;
   font-weight: bold;
 }
 
@@ -148,7 +150,6 @@ onMounted(() => {
 
 .btn-cancel:hover {
   background-color: #eb8982;
-;
 }
 
 .loading-message {
