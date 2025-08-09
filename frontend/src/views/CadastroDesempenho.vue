@@ -9,7 +9,7 @@
           <select id="aluno" v-model="novoDesempenho.aluno" required>
             <option value="" disabled selected>Selecione um aluno</option>
             <option v-for="aluno in alunos" :key="aluno.codigo" :value="aluno.codigo">
-              {{ aluno.nome }} (ID: {{ aluno.codigo }})
+              {{ aluno.nome }} 
             </option>
           </select>
 
