@@ -14,6 +14,7 @@ class CursoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DisciplinaSerializer(serializers.ModelSerializer):
+    curso_nome = serializers.CharField(source='curso.nome', read_only=True)
     class Meta:
         model = Disciplina
         fields = '__all__'

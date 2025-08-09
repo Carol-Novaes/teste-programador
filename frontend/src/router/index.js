@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DisciplinasView from '@/views/DisciplinasView.vue'
-import AtividadeView from '@/views/AtividadeView.vue'
-import DesempenhoView from '@/views/DesempenhoView.vue'
+import CadastroAtividade from '@/views/CadastroAtividade.vue'
+import CadastroDesempenho from '@/views/CadastroDesempenho.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,14 +12,14 @@ const router = createRouter({
       component: DisciplinasView,
     },
     {
-      path: '/atividades',
+      path: '/atividades/',
       name: 'atividades',
-      component: AtividadeView,
+      component: CadastroAtividade,
     },
     {
-      path: '/desempenhos',
+      path: '/desempenhos/',
       name: 'desempenhos',
-      component: DesempenhoView,
+      component: CadastroDesempenho,
     },
   ],
 })
