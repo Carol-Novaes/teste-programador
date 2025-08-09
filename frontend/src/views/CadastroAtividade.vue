@@ -1,6 +1,6 @@
 <template>
   <div class="atividades-container">
-    <h1>Inserir Atividade - {{ disciplinaNome }}</h1>   
+    <h1>Cadastrar Atividade - {{ disciplinaNome }}</h1>   
 
     <div v-if="!loading && !error">
       <form @submit.prevent="cadastrarAtividade" class="atividade-form">
@@ -15,7 +15,7 @@
           <input type="date" id="data_atividade" v-model="novaAtividade.data_atividade" required>
         </div>
         
-        <button type="submit" class="btn-submit">Cadastrar Atividade</button>
+        <button type="submit" class="btn-submit">Cadastrar</button>
         
         <router-link :to="{ name: 'disciplinas' }" class="btn-cancel">
         Cancelar

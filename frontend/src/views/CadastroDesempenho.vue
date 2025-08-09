@@ -1,6 +1,6 @@
 <template>
   <div class="desempenhos-container">
-    <h1>Cadastro de Desempenho</h1>
+    <h1>Cadastro de Pontuação</h1>
 
     <div v-if="!loading && !error">
       <form @submit.prevent="cadastrarDesempenho" class="desempenho-form">
@@ -25,7 +25,7 @@
           <input type="number" id="nota" v-model.number="novoDesempenho.nota" step="0.1" min="0" required>
         </div>
         
-        <button type="submit" class="btn-submit">Cadastrar Desempenho</button>
+        <button type="submit" class="btn-submit">Cadastrar</button>
         <router-link :to="{ name: 'disciplinas' }" class="btn-cancel">
           Cancelar
         </router-link>
@@ -203,33 +203,30 @@ onMounted(() => {
 .btn-submit {
   display: inline-block;  
   padding: 10px 15px;
-  background-color: #257ee4;
+  background-color: #257ee4;;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-right: 10px;
-  transition: background-color 0.3s;
 }
 
 .btn-submit:hover {
-  background-color: #1a6bc8;
+  background-color: #89b7eb;
 }
 
 .btn-cancel {
   display: inline-block;
-  padding: 10px 15px;
+  padding: 9px 15px;
   background-color: #f44336;
   color: white;
   text-decoration: none;
   border-radius: 4px;
-  transition: background-color 0.3s;
 }
 
 .btn-cancel:hover {
-  background-color: #d32f2f;
+  background-color: #eb8982;
 }
-
 .loading-message {
   text-align: center;
   padding: 20px;
