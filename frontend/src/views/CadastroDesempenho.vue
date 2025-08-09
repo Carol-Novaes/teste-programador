@@ -1,6 +1,6 @@
 <template>
   <div class="desempenhos-container">
-    <h1>Cadastro de Desempenho</h1>   
+    <h1>Cadastro de Desempenho</h1>
 
     <div v-if="!loading && !error">
       <form @submit.prevent="cadastrarDesempenho" class="desempenho-form">
@@ -8,8 +8,8 @@
           <label for="aluno">Aluno:</label>
           <select id="aluno" v-model="novoDesempenho.aluno" required>
             <option value="" disabled selected>Selecione um aluno</option>
-            <option v-for="aluno in alunos" :key="aluno.id" :value="aluno.id">
-              {{ aluno.nome }}
+            <option v-for="aluno in alunos" :key="aluno.codigo" :value="aluno.codigo">
+              {{ aluno.nome }} (ID: {{ aluno.codigo }})
             </option>
           </select>
 
@@ -22,11 +22,10 @@
           </select>
 
           <label for="nota">Nota:</label>
-          <input type="number" id="nota" v-model="novoDesempenho.nota" step="0.1" min="0" required>
+          <input type="number" id="nota" v-model.number="novoDesempenho.nota" step="0.1" min="0" required>
         </div>
         
         <button type="submit" class="btn-submit">Cadastrar Desempenho</button>
-
         <router-link :to="{ name: 'disciplinas' }" class="btn-cancel">
           Cancelar
         </router-link>
@@ -46,7 +45,7 @@
       <p>Erro: {{ error }}</p>
       <button @click="carregarDados">Tentar novamente</button>
     </div>
- </div> 
+  </div>
 </template>
 
 <script setup>
@@ -71,6 +70,7 @@ const carregarAlunos = async () => {
   try {
     const response = await getAPI.get('/alunos/')
     alunos.value = response.data
+    console.log('Alunos carregados:', alunos.value)
   } catch (err) {
     throw new Error('Erro ao carregar alunos: ' + err.message)
   }
@@ -80,6 +80,7 @@ const carregarAtividades = async () => {
   try {
     const response = await getAPI.get('/atividades/')
     atividades.value = response.data
+    console.log('Atividades carregadas:', atividades.value)
   } catch (err) {
     throw new Error('Erro ao carregar atividades: ' + err.message)
   }
@@ -103,19 +104,57 @@ const cadastrarDesempenho = async () => {
   isSubmitting.value = true
   
   try {
+    if (!novoDesempenho.value.aluno) {
+      throw new Error('Selecione um aluno')
+    }
+    if (!novoDesempenho.value.atividade) {
+      throw new Error('Selecione uma atividade')
+    }
+    if (novoDesempenho.value.nota === null || novoDesempenho.value.nota === '' || isNaN(novoDesempenho.value.nota)) {
+      throw new Error('Informe uma nota válida')
+    }
+
+    // Formatação para o backend
     const payload = {
-      ...novoDesempenho.value,
+      aluno: novoDesempenho.value.aluno,
+      atividade: novoDesempenho.value.atividade,
       nota: parseFloat(novoDesempenho.value.nota)
     }
+
+    console.log('Enviando payload:', payload)
     
     const response = await getAPI.post('/desempenhos/', payload)
     
     if (response.status === 201) {
       successMessage.value = 'Desempenho cadastrado com sucesso!'
+      novoDesempenho.value = {
+        aluno: '',
+        atividade: '',
+        nota: null
+      }
     }
-  } catch (err) {
-    error.value = 'Erro ao cadastrar desempenho: ' + (err.response?.data?.message || err.message)
-    console.error(err)
+    } catch (err) {
+        if (err.response?.data?.error === 'Já existe uma nota registrada para este aluno(a) nesta atividade!') {
+        error.value = err.response.data.error
+    } else {
+      error.value = 'Erro ao cadastrar: ' + 
+      (err.response?.data?.aluno?.[0] || 
+       err.response?.data?.atividade?.[0] ||
+       err.response?.data?.nota?.[0] ||
+       err.response?.data?.message || 
+       err.message)
+    }   
+    
+    console.error('Detalhes do erro:', {
+      mensagem: err.message,
+      resposta: err.response?.data,
+      payload: {
+        aluno: novoDesempenho.value.aluno,
+        atividade: novoDesempenho.value.atividade,
+        nota: novoDesempenho.value.nota
+      },
+      config: err.config
+    })
   } finally {
     isSubmitting.value = false
   }
@@ -127,6 +166,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Seus estilos permanecem os mesmos */
 .desempenhos-container {
   padding: 20px;
   max-width: 600px;
@@ -163,29 +203,31 @@ onMounted(() => {
 .btn-submit {
   display: inline-block;  
   padding: 10px 15px;
-  background-color: #257ee4;;
+  background-color: #257ee4;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-right: 10px;
+  transition: background-color 0.3s;
 }
 
 .btn-submit:hover {
-  background-color: #89b7eb;
+  background-color: #1a6bc8;
 }
 
 .btn-cancel {
   display: inline-block;
-  padding: 9px 15px;
+  padding: 10px 15px;
   background-color: #f44336;
   color: white;
   text-decoration: none;
   border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
 .btn-cancel:hover {
-  background-color: #eb8982;
+  background-color: #d32f2f;
 }
 
 .loading-message {
@@ -208,6 +250,7 @@ onMounted(() => {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .error-message button:hover {
@@ -221,5 +264,6 @@ onMounted(() => {
   background-color: #dff0d8;
   color: #3c763d;
   border-radius: 4px;
+  border: 1px solid #d6e9c6;
 }
 </style>
