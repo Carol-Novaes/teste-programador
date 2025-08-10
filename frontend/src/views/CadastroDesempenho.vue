@@ -14,10 +14,10 @@
           </select>
 
           <label for="atividade">Atividade:</label>
-          <select id="atividade" v-model="novoDesempenho.atividade" required>
-            <option value="" disabled selected>Selecione uma atividade</option>
+          <select id="atividade" v-model="novoDesempenho.atividade" required :disabled="!novoDesempenho.aluno || atividades.length === 0">
+            <option value="" disabled selected>{{ atividades.length ? 'Selecione uma atividade' : 'Nenhuma atividade disponível' }}</option>
             <option v-for="atividade in atividades" :key="atividade.id" :value="atividade.id">
-              {{ atividade.nome }} (Valor: {{ atividade.valor }} pts)
+              {{ atividade.nome }} - (Valor: {{ atividade.valor }} pts)
             </option>
           </select>
 
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { getAPI } from '@/axios-api'
 
 const alunos = ref([])
@@ -76,26 +76,47 @@ const carregarAlunos = async () => {
   }
 }
 
-const carregarAtividades = async () => {
+const carregarAtividadesPorAluno = async (alunoId) => {
   try {
-    const response = await getAPI.get('/atividades/')
+    loading.value = true
+    const response = await getAPI.get(`/alunos/${alunoId}/atividades/`)
     atividades.value = response.data
-    console.log('Atividades carregadas:', atividades.value)
   } catch (err) {
-    throw new Error('Erro ao carregar atividades: ' + err.message)
+    error.value = 'Erro ao carregar atividades: ' + (err.response?.data?.error || err.message)
+  } finally {
+    loading.value = false
   }
 }
+
+watch(() => novoDesempenho.value.aluno, (alunoId) => {
+  if (alunoId) {
+    carregarAtividadesPorAluno(alunoId)
+    novoDesempenho.value.atividade = '' 
+  } else {
+    atividades.value = [] 
+  }
+})
 
 const carregarDados = async () => {
   error.value = null
   loading.value = true
   try {
-    await Promise.all([carregarAlunos(), carregarAtividades()])
+    await carregarAlunos()
+    atividades.value = []
   } catch (err) {
     error.value = err.message
   } finally {
     loading.value = false
   }
+}
+
+const resetarFormulario = () => {
+  novoDesempenho.value = {
+    aluno: '',
+    atividade: '',
+    nota: null
+  }
+  atividades.value = [] 
 }
 
 const cadastrarDesempenho = async () => {
@@ -113,8 +134,7 @@ const cadastrarDesempenho = async () => {
     if (novoDesempenho.value.nota === null || isNaN(novoDesempenho.value.nota)) {
       throw new Error('Informe uma nota válida')
     }
-
-    // Formatação para o backend
+    
     const payload = {
       aluno: novoDesempenho.value.aluno,
       atividade: novoDesempenho.value.atividade,
@@ -127,15 +147,12 @@ const cadastrarDesempenho = async () => {
     
     if (response.status === 201) {
       successMessage.value = 'Desempenho cadastrado com sucesso!'
-      novoDesempenho.value = {
-        aluno: '',
-        atividade: '',
-        nota: null
-      }
+      resetarFormulario()
     }
     } catch (err) {
         if (err.response?.data?.error === 'Já existe uma nota registrada para este aluno(a) nesta atividade!') {
         error.value = err.response.data.error
+        resetarFormulario()
     } else {
       error.value = 'Erro ao cadastrar: ' + 
       (err.response?.data?.aluno?.[0] || 
@@ -143,6 +160,7 @@ const cadastrarDesempenho = async () => {
        err.response?.data?.nota?.[0] ||
        err.response?.data?.message || 
        err.message)
+       resetarFormulario()
     }   
     
     console.error('Detalhes do erro:', {
@@ -166,7 +184,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Seus estilos permanecem os mesmos */
 .desempenhos-container {
   padding: 20px;
   max-width: 600px;

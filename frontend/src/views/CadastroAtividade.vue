@@ -1,9 +1,10 @@
 <template>
   <div class="atividades-container">
-    <h1>Cadastrar Atividade - {{ disciplinaNome }}</h1>   
+    <h1>Cadastrar Atividade:</h1> 
 
     <div v-if="!loading && !error">
       <form @submit.prevent="cadastrarAtividade" class="atividade-form">
+        <h3>Disciplina: {{ disciplinaNome }}</h3>
         <div class="form-group">
           <label for="nome">Nome da Atividade:</label>
           <input type="text" id="nome" v-model="novaAtividade.nome" required>
@@ -18,8 +19,8 @@
         <button type="submit" class="btn-submit">Cadastrar</button>
         
         <router-link :to="{ name: 'disciplinas' }" class="btn-cancel">
-        Cancelar
-      </router-link>
+          Cancelar
+        </router-link>
       </form>
       
       <div v-if="successMessage" class="success-message">
@@ -112,8 +113,13 @@ onMounted(() => {
 .atividade-form {
   background-color: #f9f9f9;
   padding: 20px;
-  border-radius: 8px;
-  margin-top: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.atividade-form h3{
+  text-align: center;
+  margin: 15px 0;
 }
 
 .form-group {
