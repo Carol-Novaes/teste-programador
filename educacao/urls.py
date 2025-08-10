@@ -4,7 +4,7 @@ from .views import (
     CursoListCreateAPIView, CursoDetailAPIView,
     DisciplinaListCreateAPIView, DisciplinaDetailAPIView,
     MatriculaListCreateAPIView, MatriculaDetailAPIView,
-    AtividadeListCreateAPIView, AtividadeDetailAPIView,
+    AtividadeListCreateAPIView, AtividadeDetailAPIView, AtividadesPorAlunoAPIView,
     DesempenhoListCreateAPIView, DesempenhoDetailAPIView,
 )
 
@@ -23,6 +23,7 @@ urlpatterns = [
 
     path('atividades/', AtividadeListCreateAPIView.as_view()),
     path('atividades/<int:pk>/', AtividadeDetailAPIView.as_view()),
+    path('alunos/<int:aluno_id>/atividades/', AtividadesPorAlunoAPIView.as_view()),
 
     path('desempenhos/', DesempenhoListCreateAPIView.as_view()),
     path('desempenhos/<int:pk>/', DesempenhoDetailAPIView.as_view()),

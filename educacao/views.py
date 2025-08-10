@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from .models import Aluno, Curso, Disciplina, Matricula, Atividade, Desempenho
 from .serializers import AlunoSerializer, CursoSerializer, DisciplinaSerializer, MatriculaSerializer, AtividadeSerializer, DesempenhoSerializer
@@ -170,6 +171,18 @@ class AtividadeDetailAPIView(APIView):
         atividade = get_object_or_404(Atividade, pk=pk)
         atividade.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class AtividadesPorAlunoAPIView(APIView):
+    def get(self, request, aluno_id):
+        try:
+            aluno = get_object_or_404(Aluno, pk=aluno_id)            
+            matriculas = Matricula.objects.filter(codigo_aluno=aluno)
+            disciplinas_ids = [m.codigo_disciplina_id for m in matriculas]            
+            atividades = Atividade.objects.filter(disciplina_id__in=disciplinas_ids)            
+            serializer = AtividadeSerializer(atividades, many=True)            
+            return Response(serializer.data)            
+        except Exception as e:
+            return Response({'error': str(e)},status=status.HTTP_400_BAD_REQUEST)    
 
 # ----------- DESEMPENHO ----------------
 class DesempenhoListCreateAPIView(APIView):
@@ -181,12 +194,15 @@ class DesempenhoListCreateAPIView(APIView):
     def post(self, request):
         serializer = DesempenhoSerializer(data=request.data)
         if serializer.is_valid():
-            if Desempenho.objects.filter(aluno=serializer.validated_data['aluno'], 
-                                        atividade=serializer.validated_data['atividade']).exists():
-                return Response(
-                    {'error': 'Já existe uma nota registrada para este aluno(a) nesta atividade!'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            aluno = serializer.validated_data['aluno']
+            atividade = serializer.validated_data['atividade']
+
+            if Desempenho.objects.filter(aluno=aluno, atividade=atividade).exists():
+                return Response({'error': 'Já existe uma nota registrada para este aluno(a) nesta atividade!'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if not Matricula.objects.filter(codigo_aluno=aluno, codigo_disciplina=atividade.disciplina).exists():
+                return Response({'error': 'O aluno não está matriculado na disciplina desta atividade!'}, status=status.HTTP_400_BAD_REQUEST)
+            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

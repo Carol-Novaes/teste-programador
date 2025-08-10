@@ -15,6 +15,7 @@ class CursoSerializer(serializers.ModelSerializer):
 
 class DisciplinaSerializer(serializers.ModelSerializer):
     curso_nome = serializers.CharField(source='curso.nome', read_only=True)
+
     class Meta:
         model = Disciplina
         fields = '__all__'
@@ -25,6 +26,9 @@ class MatriculaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AtividadeSerializer(serializers.ModelSerializer):
+    disciplina_nome = serializers.CharField(source='disciplina.nome', read_only=True)
+    curso_nome = serializers.CharField(source='disciplina.curso.nome', read_only=True)
+
     class Meta:
         model = Atividade
         fields = '__all__'
@@ -35,8 +39,20 @@ class DesempenhoSerializer(serializers.ModelSerializer):
         fields = '__all__'   
 
     def validate(self, data):
+        aluno = data.get('aluno')
+        atividade = data.get('atividade')
+        
+        if not Matricula.objects.filter(
+            codigo_aluno=aluno,
+            codigo_disciplina=atividade.disciplina
+        ).exists():
+            raise serializers.ValidationError({
+                'aluno': 'O aluno não está matriculado na disciplina desta atividade!'
+            })
+        
         try:
-            validar_nota_maxima(data.get('atividade'), data.get('nota'))
+            validar_nota_maxima(atividade, data.get('nota'))
         except ValidationError as e:
-            raise serializers.ValidationError({'nota':str(e)})    
+            raise serializers.ValidationError({'nota': str(e)})
+            
         return data                 
