@@ -62,6 +62,11 @@ const isSubmitting = ref(false)
 const error = ref(null)
 const successMessage = ref(null)
 
+const resetPage = () => {
+  error.value = null
+  loading.value = false
+  isSubmitting.value = false
+}
 
 const cadastrarAtividade = async () => {
   error.value = null
@@ -74,13 +79,19 @@ const cadastrarAtividade = async () => {
     
     if (response.status === 201) {
       successMessage.value = 'Atividade cadastrada com sucesso!'
+      novaAtividade.value = {  // Reset dos campos
+        nome: '',
+        valor: '',
+        data_atividade: '',
+        disciplina: disciplinaId.value
+      }      
     }
   } catch (err) {
     error.value = 'Erro ao cadastrar atividade: ' + (err.response?.data?.message || err.message)
     console.error(err)
   } finally {
     loading.value = false
-    isSubmitting.value = false
+    isSubmitting.value = false    
   }
 }
 

@@ -110,7 +110,7 @@ const cadastrarDesempenho = async () => {
     if (!novoDesempenho.value.atividade) {
       throw new Error('Selecione uma atividade')
     }
-    if (novoDesempenho.value.nota === null || novoDesempenho.value.nota === '' || isNaN(novoDesempenho.value.nota)) {
+    if (novoDesempenho.value.nota === null || isNaN(novoDesempenho.value.nota)) {
       throw new Error('Informe uma nota válida')
     }
 
@@ -217,7 +217,7 @@ onMounted(() => {
 
 .btn-cancel {
   display: inline-block;
-  padding: 9px 15px;
+  padding: 10px 15px;
   background-color: #f44336;
   color: white;
   text-decoration: none;
