@@ -18,7 +18,14 @@ JOIN
     educacao_aluno a ON d.aluno_id = a.codigo
 JOIN 
     educacao_atividade ativ ON d.atividade_id = ativ.id 
-WHERE ativ.id = 2         --- Alterar o id para mudar a atividade
+WHERE ativ.id = 3         --- Alterar o id para mudar a atividade
+
+---Caso necessário, verificar os ID's das atividades:
+SELECT 
+    id AS "ID da Atv",
+    nome AS "Nome da Atv"
+FROM 
+    educacao_atividade  
 
 ---------- 3. Listar os nomes dos cursos que possuem disciplinas cadastradas.
 SELECT 
