@@ -47,15 +47,25 @@ import { ref, onMounted } from 'vue'
 import { getAPI } from '@/axios-api'
 
 const disciplinas = ref([])
+const error = ref(null) 
+const loading = ref(false)
 
-onMounted(async () => {
+const fetchDisciplinas = async () => {  // Função extraída para reuso (opcional)
+  loading.value = true
+  error.value = null
   try {
     const response = await getAPI.get('/disciplinas/')
     disciplinas.value = response.data
   } catch (err) {
     error.value = 'Erro ao carregar disciplinas: ' + err.message
     console.error(err)
+  } finally {
+    loading.value = false
   }
+}
+
+onMounted(() => {
+  fetchDisciplinas()
 })
 </script>
 
