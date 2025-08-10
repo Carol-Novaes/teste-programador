@@ -50,7 +50,7 @@ const disciplinas = ref([])
 const error = ref(null) 
 const loading = ref(false)
 
-const fetchDisciplinas = async () => {  // Função extraída para reuso (opcional)
+const fetchDisciplinas = async () => { 
   loading.value = true
   error.value = null
   try {

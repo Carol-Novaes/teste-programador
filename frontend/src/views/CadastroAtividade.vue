@@ -80,7 +80,7 @@ const cadastrarAtividade = async () => {
     
     if (response.status === 201) {
       successMessage.value = 'Atividade cadastrada com sucesso!'
-      novaAtividade.value = {  // Reset dos campos
+      novaAtividade.value = { 
         nome: '',
         valor: '',
         data_atividade: '',
