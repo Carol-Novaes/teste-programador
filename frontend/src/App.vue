@@ -1,17 +1,18 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import brasao from '@/assets/brasao.png'
 </script>
 
 <template>
   <header class="main-header">
     <nav class="nav-menu">
-      <div class="nav-spacer"></div>
+      <img :src="brasao" alt="Brasão" class="brasao-header">
       <div class="nav-links">
         <RouterLink to="/" class="nav-link" active-class="active">
           Disciplinas
         </RouterLink>
         <RouterLink to="/Desempenhos" class="nav-link" active-class="active">
-          Inserir Pontuação
+          Cadastro de Desempenho
         </RouterLink>
       </div>
     </nav>
@@ -24,15 +25,19 @@ import { RouterLink } from 'vue-router'
 .main-header {
   background-color: #f8f9fa;
   border-bottom: 1px solid #e0e0e0;
-  padding: 1rem 2rem;
+
 }
 
+.brasao-header {
+  height: 70px;
+  width: auto;
+  padding: 1rem;
+}
 .nav-menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 95%;
 }
 
 .nav-spacer {

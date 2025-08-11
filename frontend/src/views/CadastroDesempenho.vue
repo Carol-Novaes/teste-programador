@@ -1,6 +1,6 @@
 <template>
   <div class="desempenhos-container">
-    <h1>Cadastro de Pontuação</h1>
+    <h1>Cadastro de Desempenho</h1>
 
     <div v-if="!loading && !error">
       <form @submit.prevent="cadastrarDesempenho" class="desempenho-form">
