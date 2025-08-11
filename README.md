@@ -23,14 +23,14 @@ Para este teste, você precisa fazer um clone do [projeto](https://www.github.co
 
 ## Execução das Tarefas
 ### API Django
-Para ativar o ambiente virtual, execute
-    `\venv\Scripts\activate`
+Para ativar o ambiente virtual, execute 
+    `\venv\Scripts\activate` <br>
 Em seguida, inicie o servidor da API: 
-    `python manage.py runserver 8000`
+    `python manage.py runserver 8000` <br>
 O servidor está disponível em: (http://127.0.0.1:8000)
 
 ### Frontend
-Para iniciar o projeto frontend, execute:
+Para iniciar o projeto frontend, execute:<br>
     `cd frontend`
     `npm install`
     `npm run dev`
@@ -42,8 +42,8 @@ As queries estão no arquivo:
 > Caso queira executa-las no VS Code é necessário instalar a extensão SQLite (by alexcvzz).
 
 ### Aplicação de Console (Creche Pet)
-Para iniciar a aplicação de console, execute:
-    `\venv\Scripts\activate` (caso o ambiente virtual não esteja em execução)
+Para iniciar a aplicação de console, execute:<br>
+    `\venv\Scripts\activate` (caso o ambiente virtual não esteja em execução)<br>
     `python creche_pet.py`
 
 ---
