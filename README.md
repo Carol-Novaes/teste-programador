@@ -21,6 +21,30 @@ Para este teste, você precisa fazer um clone do [projeto](https://www.github.co
 
 ---
 
+## Execução das Tarefas
+### API Django
+Para iniciar o servidor da API: 
+    `python manage.py runserver 8000`
+O servidor está disponível em: (http://127.0.0.1:8000)
+
+### Frontend
+Para executar o projeto frontend:
+    `cd frontend`
+    `npm install`
+    `npm run dev`
+
+### Queries SQL 
+As queries estão no arquivo:
+    `queries/queries.sql`
+
+> Necessário instalar a extensão SQLite (by alexcvzz) no VS Code para abrir e executar o banco.
+
+### Aplicação de Console (Creche Pet)
+Para executar a aplicação de console:
+`python creche_pet.py`
+
+---
+
 ## Desafios
 
 ### Contexto
