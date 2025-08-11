@@ -37,7 +37,7 @@ Para executar o projeto frontend:
 As queries estão no arquivo:
     `queries/queries.sql`
 
-> Necessário instalar a extensão SQLite (by alexcvzz) no VS Code para abrir e executar o banco.
+> Necessário instalar a extensão SQLite (by alexcvzz) no VS Code
 
 ### Aplicação de Console (Creche Pet)
 Para executar a aplicação de console:
