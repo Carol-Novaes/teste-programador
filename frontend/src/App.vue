@@ -6,7 +6,9 @@ import brasao from '@/assets/brasao.png'
 <template>
   <header class="main-header">
     <nav class="nav-menu">
-      <img :src="brasao" alt="Brasão" class="brasao-header">
+      <router-link to="/" class="logo-link">
+        <img :src="brasao" alt="Brasão" class="brasao-header">
+      </router-link>
       <div class="nav-links">
         <RouterLink to="/" class="nav-link" active-class="active">
           Disciplinas

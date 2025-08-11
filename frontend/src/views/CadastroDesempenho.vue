@@ -140,8 +140,6 @@ const cadastrarDesempenho = async () => {
       atividade: novoDesempenho.value.atividade,
       nota: parseFloat(novoDesempenho.value.nota)
     }
-
-    console.log('Enviando payload:', payload)
     
     const response = await getAPI.post('/desempenhos/', payload)
     
@@ -150,10 +148,16 @@ const cadastrarDesempenho = async () => {
       resetarFormulario()
     }
     } catch (err) {
-        if (err.response?.data?.error === 'Já existe uma nota registrada para este aluno(a) nesta atividade!') {
-        error.value = err.response.data.error
+        if (error.value = 'Já existe uma nota registrada para este aluno(a) nesta atividade!') {
+        
         resetarFormulario()
-    } else {
+        
+        novoDesempenho.value.nota = null;
+
+    if (novoDesempenho.value.aluno) {
+      await carregarAtividadesPorAluno(novoDesempenho.value.aluno);
+    }
+  } else {
       error.value = 'Erro ao cadastrar: ' + 
       (err.response?.data?.aluno?.[0] || 
        err.response?.data?.atividade?.[0] ||
@@ -161,18 +165,8 @@ const cadastrarDesempenho = async () => {
        err.response?.data?.message || 
        err.message)
        resetarFormulario()
-    }   
-    
-    console.error('Detalhes do erro:', {
-      mensagem: err.message,
-      resposta: err.response?.data,
-      payload: {
-        aluno: novoDesempenho.value.aluno,
-        atividade: novoDesempenho.value.atividade,
-        nota: novoDesempenho.value.nota
-      },
-      config: err.config
-    })
+    }       
+
   } finally {
     isSubmitting.value = false
   }
